@@ -1,5 +1,5 @@
-// pages/index.js
 import Head from 'next/head';
+import PaymentForm from '../components/PaymentForm';
 
 export default function Home() {
   const plans = [
@@ -44,6 +44,12 @@ export default function Home() {
               </button>
             </div>
           ))}
+        </div>
+
+        {/* Payment Section */}
+        <div className="mt-16">
+          <h2 className="text-center text-3xl font-semibold mb-6">Proceed to Payment</h2>
+          <PaymentForm />
         </div>
       </div>
     </>
