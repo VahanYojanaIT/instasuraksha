@@ -1,24 +1,61 @@
 import Head from 'next/head';
-
+import { useState } from 'react';
 
 export default function Home() {
   const plans = [
     {
       title: "6 Months - Electric",
       price: "₹425",
+      amount: 42500,
       description: "Covers all electric maintenance for 2BHK and 3BHK homes.",
     },
     {
       title: "1 Year - Electric",
       price: "₹999",
+      amount: 99900,
       description: "Full year electric appliance maintenance.",
     },
     {
       title: "1 Year - Electric + Plumbing",
       price: "₹1499",
+      amount: 149900,
       description: "Includes electric and plumbing maintenance for a year.",
     },
   ];
+
+  const handlePayment = async (amount) => {
+    const response = await fetch('/api/payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ amount }),
+    });
+    const data = await response.json();
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Your Razorpay key id
+      amount: data.amount,
+      currency: data.currency,
+      name: "InstaSuraksha",
+      description: "Home Maintenance Subscription",
+      order_id: data.id,
+      handler: function (response) {
+        alert('Payment successful!'); // handle success
+      },
+      prefill: {
+        name: 'Customer Name',
+        email: 'customer@example.com',
+        contact: '9999999999',
+      },
+      theme: {
+        color: '#F37254',
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
+  };
 
   return (
     <>
@@ -39,17 +76,13 @@ export default function Home() {
               <h2 className="text-2xl font-semibold mb-2">{plan.title}</h2>
               <p className="text-xl text-green-600 font-bold mb-4">{plan.price}</p>
               <p className="mb-6 text-gray-700">{plan.description}</p>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">
+              <button 
+                onClick={() => handlePayment(plan.amount)} 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full">
                 Subscribe
               </button>
             </div>
           ))}
-        </div>
-
-        {/* Payment Section */}
-        <div className="mt-16">
-          <h2 className="text-center text-3xl font-semibold mb-6">Proceed to Payment</h2>
-          <PaymentForm />
         </div>
       </div>
     </>
