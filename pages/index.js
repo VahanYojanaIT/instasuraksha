@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import PaymentForm from '../components/PaymentForm';
+
 
 export default function Home() {
   const plans = [
