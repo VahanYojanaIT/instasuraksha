@@ -13,7 +13,7 @@ export default function Home() {
       title: "1 Year - Electric",
       price: "₹999",
       amount: 99900,
-      description: "Full year electric appliance maintenance.",
+      description: "Full year electric appliance maintenance for 2BHK and 3BHK.",
     },
     {
       title: "1 Year - Electric + Plumbing",
